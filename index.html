@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lucero京都 | STARPASS デジタル会員証</title>
     
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Urbanist:wght@600;700;800&display=swap" rel="stylesheet">
 
+    <!-- 🗺️ 地図用プログラム（Leaflet） -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -342,4 +344,1193 @@
             font-size: 11px;
             font-weight: 600;
             color: var(--lucero-gold-light);
-            letter-spacing: 1px
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .meta-value {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* クーポン利用履歴表示エリア */
+        .history-area {
+            z-index: 2;
+            margin-top: 4px;
+            margin-bottom: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(195, 160, 89, 0.15);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .history-title {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--lucero-gold-light);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(195, 160, 89, 0.2);
+            padding-bottom: 3px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            list-style: none;
+        }
+
+        .history-item {
+            display: grid;
+            grid-template-columns: 55px 1fr;
+            gap: 8px;
+            font-size: 10px;
+            line-height: 1.3;
+            align-items: flex-start;
+        }
+
+        .history-date {
+            font-family: 'Urbanist', sans-serif;
+            color: var(--lucero-gold);
+            font-weight: 700;
+        }
+
+        .history-detail {
+            color: var(--text-main);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .history-detail span {
+            color: var(--text-sub);
+            margin-left: 4px;
+        }
+
+        .history-empty {
+            font-size: 10px;
+            color: var(--text-sub);
+            text-align: center;
+            padding: 6px 0;
+            font-style: italic;
+        }
+
+        /* 🛡️ カード裏面の専用デザイン */
+        .back-content-wrapper {
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+            justify-content: flex-start;
+        }
+
+        .back-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--lucero-gold-light);
+            letter-spacing: 1px;
+            border-left: 2px solid var(--lucero-gold);
+            padding-left: 6px;
+            margin-top: 4px;
+        }
+
+        .credo-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(195, 160, 89, 0.15);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .credo-text-en {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            color: #ffffff;
+            font-style: italic;
+            letter-spacing: 0.8px;
+            line-height: 1.3;
+        }
+
+        .credo-text-ja {
+            font-size: 10px;
+            color: var(--text-sub);
+            margin-top: 5px;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .rules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 10px;
+            color: var(--text-sub);
+            padding-left: 4px;
+            line-height: 1.4;
+        }
+
+        .rules-list li {
+            list-style: none;
+            position: relative;
+            padding-left: 12px;
+        }
+
+        .rules-list li::before {
+            content: "・";
+            position: absolute;
+            left: 0;
+            color: var(--lucero-gold);
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid rgba(195, 160, 89, 0.2);
+            padding-top: 10px;
+            z-index: 2;
+        }
+
+        .pass-title {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--lucero-gold);
+            letter-spacing: 3px;
+            font-style: italic;
+        }
+
+        .club-auth {
+            text-align: right;
+            font-size: 9px;
+            color: var(--text-sub);
+            line-height: 1.3;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 11px;
+            line-height: 1.6;
+            color: var(--text-sub);
+            text-align: center;
+        }
+
+        /* 加盟店セクション */
+        .partner-section {
+            width: 100%;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--lucero-gold-light);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-left: 4px;
+            border-left: 3px solid var(--lucero-gold);
+        }
+
+        /* 🎛️ フィルターコントロールUI */
+        .control-panel {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .control-select {
+            flex: 1;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            outline: none;
+            transition: border-color 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 14px;
+        }
+
+        .control-select:focus {
+            border-color: var(--lucero-gold);
+        }
+
+        /* 🔽 アコーディオン（タップ開閉）式店舗リストコンテナ */
+        .shop-render-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .partner-card {
+            background: var(--box-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .partner-card:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .partner-card.open {
+            border-color: rgba(195, 160, 89, 0.4);
+            background: rgba(6, 21, 45, 0.4);
+        }
+
+        .partner-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .partner-name-block h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .partner-name-block h4::after {
+            content: "▼";
+            font-size: 9px;
+            color: var(--lucero-gold);
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .partner-card.open .partner-name-block h4::after {
+            transform: rotate(180deg);
+        }
+
+        .partner-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .partner-type {
+            font-size: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-sub);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        /* 📍 距離インジケーター */
+        .distance-badge {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 10px;
+            color: var(--lucero-gold-light);
+            font-weight: 700;
+            background: rgba(195, 160, 89, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(195, 160, 89, 0.2);
+        }
+
+        .benefit-badge {
+            background: #b91c1c;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 6px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(185,28,28,0.3);
+        }
+
+        /* 【🔧 修正箇所】隠し詳細コンテンツの挙動を安定化 */
+        .partner-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.25s ease-out, opacity 0.2s, margin-top 0.25s;
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 0;
+        }
+
+        .partner-card.open .partner-details {
+            max-height: 300px; /* 十分な大きさに設定 */
+            opacity: 1;
+            margin-top: 14px;
+        }
+
+        .partner-info-line {
+            font-size: 12px;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            line-height: 1.4;
+        }
+
+        .partner-info-line .pin-icon {
+            color: var(--lucero-gold);
+        }
+
+        .coupon-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+            color: #fff;
+        }
+
+        .coupon-btn:disabled {
+            background: #334155 !important;
+            color: #64748b !important;
+            cursor: not-allowed;
+        }
+
+        .action-buttons-row {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .gmap-btn {
+            flex: 1;
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+
+        .gmap-btn:hover {
+            background: #2d3748;
+        }
+
+        .web-icon-btn {
+            width: 45px;
+            height: 45px;
+            background: rgba(195, 160, 89, 0.1);
+            border: 1px solid var(--lucero-gold);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .web-icon-btn:hover {
+            background: rgba(195, 160, 89, 0.2);
+            transform: scale(1.03);
+        }
+
+        /* 地図ボックス */
+        .map-box {
+            width: 100%;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: var(--box-bg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        #clubStoreMap {
+            width: 100%;
+            height: 280px;
+            background: #0f172a;
+        }
+
+        /* モーダルポップアップ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: #0f172a;
+            border: 2px solid var(--lucero-gold);
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+        }
+
+        .modal-shop-name {
+            font-size: 13px;
+            color: var(--lucero-gold-light);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .modal-benefit-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 16px;
+            background: rgba(185, 28, 28, 0.2);
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #b91c1c;
+        }
+
+        .countdown-circle {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--lucero-gold);
+            margin: 14px 0;
+        }
+
+        .modal-instruction {
+            font-size: 12px;
+            color: var(--text-sub);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-use-complete {
+            background: var(--success);
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .btn-cancel {
+            background: #1e293b;
+            color: var(--text-sub);
+        }
+    </style>
+</head>
+<body id="bodyNode">
+
+    <header>
+        <div class="logo-area">
+            <h1>LUCERO<span>KYOTO</span></h1>
+            <p>Official Membership Pass</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- 入力フォーム -->
+        <div class="register-box" id="registerBox">
+            <h3>【初回】会員情報を登録</h3>
+            <div class="form-group">
+                <label>① 氏名（漢字フルネーム）</label>
+                <input type="text" id="inputName" placeholder="例：ルセロ 太郎">
+            </div>
+            <div class="form-group">
+                <label>② 名前アルファベット</label>
+                <input type="text" id="inputAlpha" placeholder="例：TARO LUCERO">
+            </div>
+            <div class="form-group">
+                <label>③ 所属カテゴリー</label>
+                <select id="inputCategory">
+                    <option value="" disabled selected>選択してください</option>
+                    <option value="LUCERO KYOTO U15">LUCERO KYOTO U15</option>
+                    <option value="LUCERO KYOTO U14">LUCERO KYOTO U14</option>
+                    <option value="LUCERO KYOTO U13">LUCERO KYERO U13</option>
+                    <option value="PORQUE Football school">PORQUE Football school</option>
+                    <option value="KIDS Soccer School">KIDS Soccer School</option>
+                    <option value="PARTNER">PARTNER</option>
+                </select>
+            </div>
+            <button class="btn-action btn-use-complete" onclick="saveProfileData()">
+                📄 STARPASSを発行する
+            </button>
+        </div>
+
+        <!-- 🔄 会員証反転コンテナ -->
+        <div class="card-container" id="cardContainer" onclick="toggleCardFlip()">
+            <div class="card-inner" id="cardInner">
+                
+                <!-- 💳 【表面】 -->
+                <div class="starpass-card-front">
+                    <div class="grid-bg"></div>
+                    <div class="star-glow"></div>
+                    
+                    <div class="club-watermark">
+                        <span class="watermark-star">★</span>
+                    </div>
+                    
+                    <div class="card-header">
+                        <div class="card-badge" id="passBadge">OFFICIAL</div>
+                        <div class="live-clock">
+                            <div class="live-dot"></div>
+                            <span id="clockSerial">00:00:00</span>
+                        </div>
+                    </div>
+
+                    <div class="card-profile-area">
+                        <div class="profile-image-slot" onclick="triggerImageUpload(event)" id="imageSlot">
+                            <span class="cam-icon">📷</span>
+                            <span>タップして<br>写真を登録</span>
+                        </div>
+                        <input type="file" id="imageUploadInput" accept="image/*" onchange="handleImageUpload(event)">
+
+                        <div class="player-info-text">
+                            <div class="label-sub">Member Name</div>
+                            <div class="player-name" id="cardName">未登録</div>
+                            <div class="player-alpha" id="cardAlpha">SELECT PHOTO & INFO</div>
+                            
+                            <div class="meta-grid">
+                                <div>
+                                    <div class="label-sub">ID Number</div>
+                                    <div class="meta-value" id="cardId">---</div>
+                                </div>
+                                <div>
+                                    <div class="label-sub">Valid Thru</div>
+                                    <div class="meta-value">2027.03.31</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- クーポン利用履歴 -->
+                    <div class="history-area">
+                        <div class="history-title">⏱️ クーポン利用履歴 (直近3件)</div>
+                        <ul class="history-list" id="historyList">
+                            <li class="history-empty">利用履歴はありません</li>
+                        </ul>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="pass-title">STARPASS</div>
+                        <div class="club-auth">
+                            LUCERO KYOTO<br>
+                            OFFICIAL AUTHENTIC
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 💳 【裏面】 -->
+                <div class="starpass-card-back">
+                    <div class="grid-bg"></div>
+                    
+                    <div class="back-content-wrapper">
+                        <!-- クラブクレド -->
+                        <div class="back-section-title">CLUB CREDO</div>
+                        <div class="credo-box">
+                            <div class="credo-text-en">"Brillamos como las Estrellas"</div>
+                            <div class="credo-text-ja">ひとりひとりが星々のように輝く</div>
+                        </div>
+
+                        <!-- 利用規約・注意事項 -->
+                        <div class="back-section-title">TERMS OF USE</div>
+                        <ul class="rules-list">
+                            <li>本証はLUCERO京都の公式デジタル会員証です。</li>
+                            <li>加盟店クーポンは1店舗につき1日1回まで利用可能です。</li>
+                            <li>スクリーンショット等でのクーポン利用は固くお断りします。必ず本アプリの確認画面を店員に提示してください。</li>
+                            <li>アスリートとして規律ある行動を心がけましょう。</li>
+                        </ul>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="pass-title" style="color: var(--text-sub);">BACKSIDE</div>
+                        <div class="club-auth">
+                            LUCERO KYOTO<br>
+                            MANAGEMENT OFFICE
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="info-box" id="infoBoxText">
+            ℹ️ <strong>【初回登録】</strong>情報を入力し、写真を登録してください。一度発行すると変更はできません。
+        </div>
+
+        <!-- 🏪 加盟店・クーポン選択セクション -->
+        <section class="partner-section">
+            <div class="section-title">
+                🏪 加盟店クーポン対象店舗
+            </div>
+
+            <!-- 🎛️ 絞り込み ＆ 並べ替え用のセレクトパネル -->
+            <div class="control-panel">
+                <select id="genreFilter" class="control-select" onchange="renderShopList()">
+                    <option value="all">🔍 すべてのジャンル</option>
+                    <option value="スポーツ用品・ギア">スポーツ用品・ギア</option>
+                    <option value="飲食・カフェ">飲食・カフェ</option>
+                </select>
+                <select id="sortOrder" class="control-select" onchange="handleSortChange()">
+                    <option value="default">✨ 標準（登録順）</option>
+                    <option value="distance">📍 現在地から近い順</option>
+                </select>
+            </div>
+
+            <!-- 🔽 JavaScriptが動的に店舗を並び替えて出力するコンテナ -->
+            <div class="shop-render-container" id="shopRenderContainer">
+                <!-- ここにショップカードが自動挿入されます -->
+            </div>
+
+            <!-- ■ 地図ボックス -->
+            <div class="section-title">
+                🗺️ 加盟店マップ（周辺店舗一覧）
+            </div>
+            <div class="map-box">
+                <div id="clubStoreMap"></div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- 専用ポップアップモーダル -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-shop-name" id="modalShopName">店舗名</div>
+            <div class="modal-benefit-title" id="modalBenefit">特典内容</div>
+            <div class="countdown-circle" id="modalTimer">30</div>
+            <p class="modal-instruction">
+                【店員確認用画面】<br>
+                この画面をスタッフに見せてください。<br>
+                確認後、下のボタンをタップして完了します。
+            </p>
+            <button class="btn-action btn-use-complete" onclick="executeUseCoupon()">
+                ✅ 確認して利用完了！
+            </button>
+            <button class="btn-action btn-cancel" onclick="closeCouponModal()">
+                戻る（キャンセル）
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzQGjquUqg9VC16qCh5oYiO7u7M8FKJVaIjjwgRa34fgVFGbXVdVpEAYXnIMKhMjvUlKw/exec";
+
+        // 🏬 データマスタ
+        const shopList = [
+            { id: "1", name: "ルセロスポーツ 向日町店", genre: "スポーツ用品・ギア", benefit: "会計から10%OFF", address: "京都府向日市寺戸町瓜生22", lat: 34.9458, lng: 135.7012, mapUrl: "https://www.google.com/maps/search/?api=1&query=34.9458,135.7012", webUrl: "https://lucero-kyoto.com" },
+            { id: "2", name: "Lucero カフェ & キッチン", genre: "飲食・カフェ", benefit: "トッピング1品無料", address: "京都府京都市伏見区深草一ノ坪町", lat: 34.9634, lng: 135.7675, mapUrl: "https://www.google.com/maps/search/?api=1&query=34.9634,135.7675", webUrl: "https://lucero-kyoto.com" },
+            { id: "3", name: "ALOHANA CAFE", genre: "飲食・カフェ", benefit: "お会計から5%OFF", address: "京都府京都市上京区出水町274", lat: 35.021947, lng: 135.768975, mapUrl: "https://www.google.com/maps/search/?api=1&query=35.021947,135.768975", webUrl: "https://tabelog.com/kyoto/A2601/A260302/26005677/" }
+        ];
+
+        let globalPhotoData = ""; 
+        let isRegistered = false; 
+        let activeCouponId = null;
+        let countdownInterval = null;
+        let map = null;
+        let userLocation = null; 
+
+        // アプリ起動
+        function startApp() {
+            try {
+                initCard();
+                updateHistoryDisplay();
+                renderShopList(); 
+                
+                setTimeout(() => {
+                    initMap();
+                }, 300);
+            } catch(e) {
+                console.error("App startup error: ", e);
+            }
+        }
+
+        function initCard() {
+            const savedName = localStorage.getItem('lucero_starpass_name');
+            const savedAlpha = localStorage.getItem('lucero_starpass_alpha');
+            const savedCat = localStorage.getItem('lucero_starpass_cat');
+            const savedId = localStorage.getItem('lucero_starpass_id');
+            const savedPhoto = localStorage.getItem('lucero_starpass_photo');
+
+            const registerBox = document.getElementById('registerBox');
+            const infoBoxText = document.getElementById('infoBoxText');
+
+            if (savedName && savedPhoto) {
+                isRegistered = true;
+                if(registerBox) registerBox.style.setProperty('display', 'none', 'important');
+                
+                if(document.getElementById('cardName')) document.getElementById('cardName').innerText = savedName;
+                if(document.getElementById('cardAlpha')) document.getElementById('cardAlpha').innerText = savedAlpha || "";
+                if(document.getElementById('passBadge')) document.getElementById('passBadge').innerText = savedCat || "OFFICIAL";
+                if(document.getElementById('cardId')) document.getElementById('cardId').innerText = savedId;
+                globalPhotoData = savedPhoto;
+                displaySavedPhoto(savedPhoto);
+                
+                if(infoBoxText) infoBoxText.innerHTML = `ℹ️ <strong>【ご利用方法】</strong>カードをタップすると裏面に切り替わります。行きたい店舗をタップするとクーポンと詳細が開きます。`;
+            } else {
+                isRegistered = false;
+                if(registerBox) registerBox.style.setProperty('display', 'flex', 'important');
+                if(infoBoxText) infoBoxText.innerHTML = `ℹ️ <strong>【初回登録】</strong>情報を入力し、写真を登録してください。一度発行すると変更はできません。`;
+            }
+        }
+
+        // 会員証の3D反転
+        function toggleCardFlip() {
+            const container = document.getElementById('cardContainer');
+            if(container) container.classList.toggle('flipped');
+        }
+
+        // アコーディオン開閉
+        function toggleAccordion(element) {
+            document.querySelectorAll('.partner-card').forEach(card => {
+                if (card !== element) card.classList.remove('open');
+            });
+            element.classList.toggle('open');
+        }
+
+        // 直線距離計算
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; 
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; 
+        }
+
+        // GPS判定ハンドラ
+        function handleSortChange() {
+            const sortVal = document.getElementById('sortOrder').value;
+            if (sortVal === 'distance' && !userLocation) {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition((pos) => {
+                        userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                        renderShopList();
+                    }, () => {
+                        alert("位置情報の取得が許可されませんでした。標準順で表示します。");
+                        document.getElementById('sortOrder').value = 'default';
+                        renderShopList();
+                    });
+                } else {
+                    alert("お使いの端末は位置情報に対応していません。");
+                    document.getElementById('sortOrder').value = 'default';
+                }
+            } else {
+                renderShopList();
+            }
+        }
+
+        // リストの動的レンダリング
+        function renderShopList() {
+            const container = document.getElementById('shopRenderContainer');
+            if (!container) return;
+
+            const selectedGenre = document.getElementById('genreFilter').value;
+            const sortVal = document.getElementById('sortOrder').value;
+            const today = getTodayString();
+
+            let filteredList = shopList.filter(shop => {
+                return (selectedGenre === 'all' || shop.genre === selectedGenre);
+            });
+
+            if (sortVal === 'distance' && userLocation) {
+                filteredList.sort((a, b) => {
+                    const distA = calculateDistance(userLocation.lat, userLocation.lng, a.lat, a.lng);
+                    const distB = calculateDistance(userLocation.lat, userLocation.lng, b.lat, b.lng);
+                    return distA - distB; 
+                });
+            }
+
+            let html = "";
+            filteredList.forEach(shop => {
+                const lastUsed = localStorage.getItem(`lucero_coupon_used_${shop.id}`);
+                const isUsedToday = (lastUsed === today);
+                
+                const btnAttr = isUsedToday ? "disabled" : "";
+                const btnText = isUsedToday ? "🚫 本日は利用済みです" : "🎫 クーポン画面を店員に見せる";
+
+                let distanceText = "";
+                if (userLocation) {
+                    const dist = calculateDistance(userLocation.lat, userLocation.lng, shop.lat, shop.lng);
+                    distanceText = `<span class="distance-badge">📍 約${dist.toFixed(1)}km</span>`;
+                }
+
+                html += `
+                    <div class="partner-card" onclick="toggleAccordion(this)">
+                        <div class="partner-header">
+                            <div class="partner-name-block">
+                                <h4 id="shopName_${shop.id}">${shop.name}</h4>
+                                <div class="partner-meta-row">
+                                    <span class="partner-type">${shop.genre}</span>
+                                    ${distanceText}
+                                </div>
+                            </div>
+                            <div class="benefit-badge" id="benefit_${shop.id}">${shop.benefit}</div>
+                        </div>
+                        <div class="partner-details">
+                            <div class="partner-info-line">
+                                <span class="pin-icon">📍</span>
+                                <span>${shop.address}</span>
+                            </div>
+                            <button class="coupon-btn" id="couponBtn_${shop.id}" ${btnAttr} onclick="selectCoupon('${shop.id}', event)">
+                                ${btnText}
+                            </button>
+                            <div class="action-buttons-row">
+                                <a href="${shop.mapUrl}" target="_blank" class="gmap-btn" onclick="event.stopPropagation()">
+                                    🗺️ ナビを開始
+                                </a>
+                                <a href="${shop.webUrl}" target="_blank" class="web-icon-btn" title="公式ウェブサイト" onclick="event.stopPropagation()">
+                                    🌐
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if(filteredList.length === 0) {
+                html = `<div style="text-align:center; padding:20px; font-size:12px; color:var(--text-sub);">該当する店舗がありません</div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // 地図初期化
+        function initMap() {
+            try {
+                const mapTarget = document.getElementById('clubStoreMap');
+                if(!mapTarget) return;
+                if(map) return;
+
+                map = L.map('clubStoreMap').setView([34.985, 135.75], 11);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+                shopList.forEach(shop => {
+                    const marker = L.marker([shop.lat, shop.lng]).addTo(map);
+                    marker.bindPopup(`<b style="color:#0f172a;">${shop.name}</b><br><span style="color:#b91c1c;font-weight:bold;">🎁 ${shop.benefit}</span>`);
+                });
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition((pos) => {
+                        userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                        
+                        const myIcon = L.divIcon({
+                            className: 'my-location-marker',
+                            html: '<div style="width:12px;height:12px;background:#3b82f6;border:2px solid #fff;border-radius:50%;box-shadow:0 0 6px #3b82f6;"></div>'
+                        });
+                        
+                        L.marker([userLocation.lat, userLocation.lng], {icon: myIcon}).addTo(map).bindPopup('<b style="color:#3b82f6;">現在地</b>');
+                        map.setView([userLocation.lat, userLocation.lng], 12);
+                        
+                        renderShopList();
+                    }, () => {
+                        console.log("GPS access denied.");
+                    }, { timeout: 4000 });
+                }
+
+                setTimeout(() => {
+                    if(map) map.invalidateSize();
+                }, 200);
+
+            } catch(e) {
+                console.error("Map error: ", e);
+            }
+        }
+
+        function getTodayString() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        }
+
+        function selectCoupon(id, event) {
+            if (event) event.stopPropagation(); 
+            if (!isRegistered) { alert("先に会員登録を完了させてください。"); return; }
+            activeCouponId = id;
+            
+            const targetShop = shopList.find(s => s.id === id);
+            if (!targetShop) return;
+
+            document.getElementById('modalShopName').innerText = targetShop.name;
+            document.getElementById('modalBenefit').innerText = targetShop.benefit;
+            document.getElementById('modalOverlay').classList.add('active');
+
+            let timeLeft = 30;
+            document.getElementById('modalTimer').innerText = timeLeft;
+            clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('modalTimer').innerText = timeLeft;
+                if(timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    closeCouponModal();
+                    alert("タイムアウトしました。もう一度やり直してください。");
+                }
+            }, 1000);
+        }
+
+        function executeUseCoupon() {
+            if (!activeCouponId) return;
+            clearInterval(countdownInterval);
+
+            const targetShop = shopList.find(s => s.id === activeCouponId);
+            if (!targetShop) return;
+
+            const payload = {
+                player_id: localStorage.getItem('lucero_starpass_id'),
+                player_name: localStorage.getItem('lucero_starpass_name'),
+                category: localStorage.getItem('lucero_starpass_cat'),
+                shop_name: targetShop.name,
+                benefit: targetShop.benefit
+            };
+
+            fetch(GAS_WEBAPP_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                localStorage.setItem(`lucero_coupon_used_${activeCouponId}`, getTodayString());
+                saveToHistory(targetShop.name, targetShop.benefit);
+                
+                alert("ご利用ありがとうございました！");
+                closeCouponModal();
+                renderShopList(); 
+            })
+            .catch((err) => {
+                console.error(err);
+                alert("通信エラーが発生しました。再度お試しください。");
+            });
+        }
+
+        function saveToHistory(shopName, benefit) {
+            const d = new Date();
+            const dateStr = `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+            
+            let history = JSON.parse(localStorage.getItem('lucero_coupon_history')) || [];
+            history.unshift({ date: dateStr, shop: shopName, benefit: benefit });
+            if (history.length > 3) history = history.slice(0, 3);
+            
+            localStorage.setItem('lucero_coupon_history', JSON.stringify(history));
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const listEl = document.getElementById('historyList');
+            if (!listEl) return;
+            
+            const history = JSON.parse(localStorage.getItem('lucero_coupon_history')) || [];
+            if (history.length === 0) {
+                listEl.innerHTML = `<li class="history-empty">利用履歴はありません</li>`;
+                return;
+            }
+            
+            let html = "";
+            history.forEach(item => {
+                html += `
+                    <li class="history-item">
+                        <div class="history-date">${item.date}</div>
+                        <div class="history-detail">${item.shop}<span>(${item.benefit})</span></div>
+                    </li>
+                `;
+            });
+            listEl.innerHTML = html;
+        }
+
+        function closeCouponModal() {
+            clearInterval(countdownInterval);
+            const overlay = document.getElementById('modalOverlay');
+            if(overlay) overlay.classList.remove('active');
+            activeCouponId = null;
+        }
+
+        function getPrefixByCategory(category) {
+            switch(category) {
+                case "LUCERO KYOTO U15": return "U15";
+                case "LUCERO KYOTO U14": return "U14";
+                case "LUCERO KYOTO U13": return "U13";
+                case "PORQUE Football school": return "PRQ";
+                case "KIDS Soccer School": return "KIDS";
+                case "PARTNER": return "PTN";
+                default: return "U15";
+            }
+        }
+
+        function saveProfileData() {
+            if (isRegistered) return; 
+
+            const nameInput = document.getElementById('inputName').value.trim();
+            const alphaInput = document.getElementById('inputAlpha').value.trim().toUpperCase();
+            const catInput = document.getElementById('inputCategory').value;
+
+            if (!nameInput) { alert("「① 氏名」を入力してください。"); return; }
+            if (!alphaInput) { alert("「② アルファベット」を入力してください。"); return; }
+            if (!catInput) { alert("「③ カテゴリー」を選択してください。"); return; }
+            if (!globalPhotoData) { alert("「写真」を登録してください。"); return; }
+
+            const prefix = getPrefixByCategory(catInput);
+            const generatedId = `${prefix}-${Math.floor(Math.random() * 9000 + 1000)}`;
+
+            localStorage.setItem('lucero_starpass_name', nameInput);
+            localStorage.setItem('lucero_starpass_alpha', alphaInput);
+            localStorage.setItem('lucero_starpass_cat', catInput);
+            localStorage.setItem('lucero_starpass_id', generatedId);
+            localStorage.setItem('lucero_starpass_photo', globalPhotoData);
+
+            isRegistered = true;
+            initCard();
+            renderShopList(); 
+            alert("STARPASSを発行しました！");
+        }
+
+        function triggerImageUpload(event) { 
+            if (event) event.stopPropagation();
+            if (isRegistered) return; 
+            const input = document.getElementById('imageUploadInput'); 
+            if(input) input.click(); 
+        }
+
+        function handleImageUpload(event) {
+            if (isRegistered) return;
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 300; 
+                    let width = img.width; let height = img.height;
+                    if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    canvas.width = width; canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    globalPhotoData = canvas.toDataURL('image/jpeg', 0.7);
+                    displaySavedPhoto(globalPhotoData);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function displaySavedPhoto(photoData) {
+            const slot = document.getElementById('imageSlot');
+            if(slot) slot.innerHTML = `<img src="${photoData}" alt="顔写真">`;
+        }
+
+        function updateClock() {
+            const clockSerial = document.getElementById('clockSerial');
+            if(!clockSerial) return;
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            const ms = String(Math.floor(now.getMilliseconds() / 10)).padStart(2, '0');
+            clockSerial.innerText = `${h}:${m}:${s}.${ms}`;
+        }
+        setInterval(updateClock, 50);
+
+        // ジャイロアニメーション
+        try {
+            const container = document.getElementById('cardContainer');
+            const inner = document.getElementById('cardInner');
+            if (container && inner) {
+                container.addEventListener('mousemove', (e) => {
+                    if (container.classList.contains('flipped')) return;
+                    const rect = container.getBoundingClientRect();
+                    const ax = -(rect.height / 2 - (e.clientY - rect.top)) / 15;
+                    const ay = ((e.clientX - rect.left) - rect.width / 2) / 15;
+                    inner.style.transform = `rotateX(${Math.max(-10, Math.min(10, ax))}deg) rotateY(${Math.max(-10, Math.min(10, ay))}deg)`;
+                });
+                container.addEventListener('touchmove', (e) => {
+                    if (container.classList.contains('flipped')) return;
+                    if (e.touches.length === 1) {
+                        const rect = container.getBoundingClientRect();
+                        const ax = -(rect.height / 2 - (e.touches[0].clientY - rect.top)) / 15;
+                        const ay = ((e.touches[0].clientX - rect.left) - rect.width / 2) / 15;
+                        inner.style.transform = `rotateX(${Math.max(-10, Math.min(10, ax))}deg) rotateY(${Math.max(-10, Math.min(10, ay))}deg)`;
+                    }
+                });
+                const resetCard = () => { 
+                    if (container.classList.contains('flipped')) {
+                        inner.style.transform = 'rotateY(180deg)';
+                    } else {
+                        inner.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                    }
+                };
+                container.addEventListener('mouseleave', resetCard);
+                container.addEventListener('touchend', resetCard);
+            }
+        } catch(e) { console.error(e); }
+
+        window.addEventListener('load', startApp);
+        window.addEventListener('DOMContentLoaded', startApp);
+    </script>
+</body>
+</html>

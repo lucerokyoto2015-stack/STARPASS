@@ -267,3 +267,259 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             flex-shrink: 0;
         }
+
+        .not-registered .profile-image-slot {
+            cursor: pointer;
+        }
+
+        .profile-image-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-image-slot i {
+            font-size: 24px;
+            color: var(--lucero-gold);
+            margin-bottom: 4px;
+        }
+
+        .profile-image-slot span {
+            font-size: 9px;
+            color: var(--text-sub);
+            text-align: center;
+            padding: 0 4px;
+        }
+
+        #imageUploadInput {
+            display: none;
+        }
+
+        .player-info-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .label-sub {
+            font-size: 9px;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 1px;
+        }
+
+        .player-name {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-alpha {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--lucero-gold-light);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 6px;
+        }
+
+        .meta-value {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid rgba(195, 160, 89, 0.2);
+            padding-top: 12px;
+            z-index: 2;
+        }
+
+        .pass-title {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--lucero-gold);
+            letter-spacing: 3px;
+            font-style: italic;
+        }
+
+        .club-auth {
+            text-align: right;
+            font-size: 9px;
+            color: var(--text-sub);
+            line-height: 1.3;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 11px;
+            line-height: 1.6;
+            color: var(--text-sub);
+        }
+
+        /* 加盟店・クーポンセクション */
+        .partner-section {
+            width: 100%;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--lucero-gold-light);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-left: 4px;
+            border-left: 3px solid var(--lucero-gold);
+        }
+
+        .partner-card {
+            background: var(--box-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .partner-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .partner-name-block h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .partner-type {
+            font-size: 10px;
+            background: rgba(195, 160, 89, 0.15);
+            color: var(--lucero-gold-light);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        .benefit-badge {
+            background: #b91c1c;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .partner-info-line {
+            font-size: 12px;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            line-height: 1.4;
+        }
+
+        .partner-info-line i {
+            color: var(--lucero-gold);
+            width: 14px;
+            text-align: center;
+        }
+
+        .coupon-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+            color: #fff;
+        }
+
+        .coupon-btn:disabled {
+            background: #334155 !important;
+            color: #64748b !important;
+            cursor: not-allowed;
+        }
+
+        .map-wrapper {
+            width: 100%;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 4px;
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .gmap-btn {
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 2px;
+        }
+
+        /* 🔒 認証ポップアップモーダル */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-

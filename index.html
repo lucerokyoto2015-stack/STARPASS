@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lucero京都 | STARPASS デジタル会員証</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Urbanist:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
         :root {
@@ -238,7 +242,7 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.9); opacity: 0.6; }
+            0 { transform: scale(0.9); opacity: 0.6; }
             50% { transform: scale(1.2); opacity: 1; }
             100% { transform: scale(0.9); opacity: 0.6; }
         }
@@ -466,3 +470,291 @@
             cursor: pointer;
             display: flex;
             justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+            color: #fff;
+        }
+
+        .coupon-btn:disabled {
+            background: #334155 !important;
+            color: #64748b !important;
+            cursor: not-allowed;
+        }
+
+        .gmap-btn {
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+
+        .gmap-btn:hover {
+            background: #2d3748;
+        }
+
+        /* 🗺️ マップ表示エリア */
+        .map-box {
+            width: 100%;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: var(--box-bg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        #clubStoreMap {
+            width: 100%;
+            height: 280px;
+            background: #0f172a;
+        }
+
+        /* 🔒 認証ポップアップモーダル */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: #0f172a;
+            border: 2px solid var(--lucero-gold);
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+        }
+
+        .modal-shop-name {
+            font-size: 13px;
+            color: var(--lucero-gold-light);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .modal-benefit-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 16px;
+            background: rgba(185, 28, 28, 0.2);
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #b91c1c;
+        }
+
+        .countdown-circle {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--lucero-gold);
+            margin: 14px 0;
+        }
+
+        .modal-instruction {
+            font-size: 12px;
+            color: var(--text-sub);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-use-complete {
+            background: var(--success);
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .btn-cancel {
+            background: #1e293b;
+            color: var(--text-sub);
+        }
+    </style>
+</head>
+<body id="bodyNode">
+
+    <header>
+        <div class="logo-area">
+            <h1>LUCERO<span>KYOTO</span></h1>
+            <p>Official Membership Pass</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="register-box" id="registerBox">
+            <h3>【初回】会員情報を登録</h3>
+            <div class="form-group">
+                <label>① 氏名（漢字フルネーム）</label>
+                <input type="text" id="inputName" placeholder="例：ルセロ 太郎">
+            </div>
+            <div class="form-group">
+                <label>② 名前アルファベット</label>
+                <input type="text" id="inputAlpha" placeholder="例：TARO LUCERO">
+            </div>
+            <div class="form-group">
+                <label>③ 所属カテゴリー</label>
+                <select id="inputCategory">
+                    <option value="" disabled selected>選択してください</option>
+                    <option value="LUCERO KYOTO U15">LUCERO KYOTO U15</option>
+                    <option value="LUCERO KYOTO U14">LUCERO KYOTO U14</option>
+                    <option value="LUCERO KYOTO U13">LUCERO KYOTO U13</option>
+                    <option value="PORQUE Football school">PORQUE Football school</option>
+                    <option value="KIDS Soccer School">KIDS Soccer School</option>
+                    <option value="PARTNER">PARTNER</option>
+                </select>
+            </div>
+            <button class="btn-action btn-use-complete" onclick="saveProfileData()">
+                📄 STARPASSを発行する
+            </button>
+        </div>
+
+        <div class="card-container" id="cardContainer">
+            <div class="starpass-card" id="starpassCard">
+                <div class="grid-bg"></div>
+                <div class="star-glow"></div>
+                
+                <div class="club-watermark">
+                    <span class="watermark-star">★</span>
+                </div>
+                
+                <div class="card-header">
+                    <div class="card-badge" id="passBadge">OFFICIAL</div>
+                    <div class="live-clock">
+                        <div class="live-dot"></div>
+                        <span id="clockSerial">00:00:00</span>
+                    </div>
+                </div>
+
+                <div class="card-profile-area">
+                    <div class="profile-image-slot" onclick="triggerImageUpload()" id="imageSlot">
+                        <span class="cam-icon">📷</span>
+                        <span>タップして<br>写真を登録</span>
+                    </div>
+                    <input type="file" id="imageUploadInput" accept="image/*" onchange="handleImageUpload(event)">
+
+                    <div class="player-info-text">
+                        <div class="label-sub">Member Name</div>
+                        <div class="player-name" id="cardName">未登録</div>
+                        <div class="player-alpha" id="cardAlpha">SELECT PHOTO & INFO</div>
+                        
+                        <div class="meta-grid">
+                            <div>
+                                <div class="label-sub">ID Number</div>
+                                <div class="meta-value" id="cardId">---</div>
+                            </div>
+                            <div>
+                                <div class="label-sub">Valid Thru</div>
+                                <div class="meta-value">2027.03.31</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="pass-title">STARPASS</div>
+                    <div class="club-auth">
+                        LUCERO KYOTO<br>
+                        OFFICIAL AUTHENTIC
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box" id="infoBoxText">
+            ℹ️ <strong>【初回登録】</strong>情報を入力し、写真を登録してください。一度発行すると変更はできません。
+        </div>
+
+        <section class="partner-section">
+            <div class="section-title">
+                🏪 加盟店クーポン対象店舗
+            </div>
+
+            <div class="partner-card">
+                <div class="partner-header">
+                    <div class="partner-name-block">
+                        <h4 id="shopName_1">ルセロスポーツ 向日町店</h4>
+                        <span class="partner-type">スポーツ用品・ギア</span>
+                    </div>
+                    <div class="benefit-badge" id="benefit_1">会計から10%OFF</div>
+                </div>
+                <div class="partner-info-line">
+                    <span class="pin-icon">📍</span>
+                    <span>京都府向日市寺戸町瓜生22</span>
+                </div>
+                <button class="coupon-btn" id="couponBtn_1" onclick="selectCoupon('1')">
+                    🎫 クーポン画面を店員に見せる
+                </button>
+                <a href="https://www.google.com/maps/search/?api=1&query=34.9458,135.7012" target="_blank" class="gmap-btn">
+                    🗺️ Googleマップでナビを開始
+                </a>
+            </div>
+
+            <div class="partner-card">
+                <div class="partner-header">
+                    <div class="partner-name-block">
+                        <h4 id="shopName_2">Lucero カフェ & キッチン</h4>
+                        <span class="partner-type">飲食・カフェ</span>
+                    </div>
+                    <div class="benefit-badge" id="benefit_2">トッピング1品無料</div>
+                </div>
+                <div class="partner-info-line">
+                    <span class="pin-icon">📍</span>
+                    <span>京都府京都市伏見区深草一ノ坪町</span>
+                </div>
+                <button class="coupon-btn" id="couponBtn_2" onclick="selectCoupon('2')">
+                    🎫 クーポン画面を店員に見せる
+                </button>
+                <a href="https://www.google.com/maps/search/?api=1&query=34.9634,135.7675" target="_blank" class="gmap-btn">
+                    🗺️ Googleマップでナビを開始
+                </a>
+            </div>
+
+            <div class="section-title">
+                🗺️ 加盟店マップ（周辺店舗一覧）
+            </div>
+            <div class="map-box">
+                <div id="clubStoreMap"></div>
+            </div>
+
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-shop-name" id="modalShopName">店舗名</div>
+            <div class="modal-benefit-title" id="modalBenefit">特典内容</div>
+            <div class="countdown-circle" id="modalTimer">30</div>
+            <p class="modal-instruction">

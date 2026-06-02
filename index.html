@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lucero京都 | STARPASS デジタル会員証</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Urbanist:wght@600;700;800&display=swap" rel="stylesheet">
 
-    <!-- 🗺️ 地図用プログラム（Leaflet） -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -51,7 +49,7 @@
             width: 100%;
             max-width: 360px;
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .logo-area h1 {
@@ -135,31 +133,52 @@
             border-color: var(--lucero-gold);
         }
 
-        /* カードのベーススタイル */
+        /* 🔄 3D反転コンテナ構造 */
         .card-container {
-            perspective: 1000px;
+            perspective: 1200px;
             width: 100%;
             aspect-ratio: 1 / 1.55;
             position: relative;
-            touch-action: none;
+            cursor: pointer;
         }
 
-        .starpass-card {
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* JavaScriptでこのクラスを付け外ししてひっくり返します */
+        .card-container.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* 表裏共通のベーススタイル */
+        .starpass-card-front,
+        .starpass-card-back {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, #0a192f 0%, #020813 100%);
             border: 2px solid var(--lucero-gold);
             border-radius: 20px;
-            position: relative;
             padding: 24px 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
-            transform: rotateX(0deg) rotateY(0deg);
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
+            backface-visibility: hidden; /* 裏返った側を非表示にする超重要プロパティ */
+            -webkit-backface-visibility: hidden;
+        }
+
+        /* ↩️ 裏面は最初から180度回しておく */
+        .starpass-card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #020813 0%, #06152d 100%);
         }
 
         .grid-bg {
@@ -348,11 +367,11 @@
             color: var(--text-main);
         }
 
-        /* 📋 クーポン利用履歴表示エリア（新設スぺース） */
+        /* 📋 クーポン利用履歴表示エリア */
         .history-area {
             z-index: 2;
             margin-top: 4px;
-            margin-bottom: auto; /* 下段ロゴとのスペースを保つ */
+            margin-bottom: auto;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(195, 160, 89, 0.15);
             border-radius: 10px;
@@ -412,6 +431,73 @@
             font-style: italic;
         }
 
+        /* 🛡️ カード裏面の専用デザイン（追加スペース活用） */
+        .back-content-wrapper {
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+            justify-content: flex-start;
+        }
+
+        .back-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--lucero-gold-light);
+            letter-spacing: 1px;
+            border-left: 2px solid var(--lucero-gold);
+            padding-left: 6px;
+            margin-top: 4px;
+        }
+
+        .credo-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(195, 160, 89, 0.1);
+            border-radius: 8px;
+            padding: 10px 12px;
+        }
+
+        .credo-text-en {
+            font-family: 'Urbanist', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            font-style: italic;
+            letter-spacing: 0.5px;
+            line-height: 1.3;
+        }
+
+        .credo-text-ja {
+            font-size: 10px;
+            color: var(--text-sub);
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        .rules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 10px;
+            color: var(--text-sub);
+            padding-left: 4px;
+            line-height: 1.4;
+        }
+
+        .rules-list li {
+            list-style: none;
+            position: relative;
+            padding-left: 12px;
+        }
+
+        .rules-list li::before {
+            content: "・";
+            position: absolute;
+            left: 0;
+            color: var(--lucero-gold);
+        }
+
         .card-footer {
             display: flex;
             justify-content: space-between;
@@ -445,6 +531,7 @@
             font-size: 11px;
             line-height: 1.6;
             color: var(--text-sub);
+            text-align: center;
         }
 
         /* 加盟店・クーポンセクション */
@@ -680,7 +767,6 @@
     </header>
 
     <main>
-        <!-- 入力フォーム -->
         <div class="register-box" id="registerBox">
             <h3>【初回】会員情報を登録</h3>
             <div class="form-group">
@@ -708,65 +794,94 @@
             </button>
         </div>
 
-        <!-- 会員証本体 -->
-        <div class="card-container" id="cardContainer">
-            <div class="starpass-card" id="starpassCard">
-                <div class="grid-bg"></div>
-                <div class="star-glow"></div>
+        <div class="card-container" id="cardContainer" onclick="toggleCardFlip()">
+            <div class="card-inner" id="cardInner">
                 
-                <div class="club-watermark">
-                    <span class="watermark-star">★</span>
-                </div>
-                
-                <div class="card-header">
-                    <div class="card-badge" id="passBadge">OFFICIAL</div>
-                    <div class="live-clock">
-                        <div class="live-dot"></div>
-                        <span id="clockSerial">00:00:00</span>
+                <div class="starpass-card-front">
+                    <div class="grid-bg"></div>
+                    <div class="star-glow"></div>
+                    
+                    <div class="club-watermark">
+                        <span class="watermark-star">★</span>
                     </div>
-                </div>
-
-                <div class="card-profile-area">
-                    <div class="profile-image-slot" onclick="triggerImageUpload()" id="imageSlot">
-                        <span class="cam-icon">📷</span>
-                        <span>タップして<br>写真を登録</span>
+                    
+                    <div class="card-header">
+                        <div class="card-badge" id="passBadge">OFFICIAL</div>
+                        <div class="live-clock">
+                            <div class="live-dot"></div>
+                            <span id="clockSerial">00:00:00</span>
+                        </div>
                     </div>
-                    <input type="file" id="imageUploadInput" accept="image/*" onchange="handleImageUpload(event)">
 
-                    <div class="player-info-text">
-                        <div class="label-sub">Member Name</div>
-                        <div class="player-name" id="cardName">未登録</div>
-                        <div class="player-alpha" id="cardAlpha">SELECT PHOTO & INFO</div>
-                        
-                        <div class="meta-grid">
-                            <div>
-                                <div class="label-sub">ID Number</div>
-                                <div class="meta-value" id="cardId">---</div>
+                    <div class="card-profile-area">
+                        <div class="profile-image-slot" onclick="triggerImageUpload(event)" id="imageSlot">
+                            <span class="cam-icon">📷</span>
+                            <span>タップして<br>写真を登録</span>
+                        </div>
+                        <input type="file" id="imageUploadInput" accept="image/*" onchange="handleImageUpload(event)">
+
+                        <div class="player-info-text">
+                            <div class="label-sub">Member Name</div>
+                            <div class="player-name" id="cardName">未登録</div>
+                            <div class="player-alpha" id="cardAlpha">SELECT PHOTO & INFO</div>
+                            
+                            <div class="meta-grid">
+                                <div>
+                                    <div class="label-sub">ID Number</div>
+                                    <div class="meta-value" id="cardId">---</div>
+                                </div>
+                                <div>
+                                    <div class="label-sub">Valid Thru</div>
+                                    <div class="meta-value">2027.03.31</div>
+                                </div>
                             </div>
-                            <div>
-                                <div class="label-sub">Valid Thru</div>
-                                <div class="meta-value">2027.03.31</div>
-                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-area">
+                        <div class="history-title">⏱️ クーポン利用履歴 (直近3件)</div>
+                        <ul class="history-list" id="historyList">
+                            <li class="history-empty">利用履歴はありません</li>
+                        </ul>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="pass-title">STARPASS</div>
+                        <div class="club-auth">
+                            LUCERO KYOTO<br>
+                            OFFICIAL AUTHENTIC
                         </div>
                     </div>
                 </div>
 
-                <!-- 📋 クーポン利用履歴表示エリア（新設） -->
-                <div class="history-area">
-                    <div class="history-title">⏱️ クーポン利用履歴 (直近3件)</div>
-                    <ul class="history-list" id="historyList">
-                        <!-- ここにJavaScriptで履歴が自動挿入されます -->
-                        <li class="history-empty">利用履歴はありません</li>
-                    </ul>
-                </div>
+                <div class="starpass-card-back">
+                    <div class="grid-bg"></div>
+                    
+                    <div class="back-content-wrapper">
+                        <div class="back-section-title">CLUB CREDO</div>
+                        <div class="credo-box">
+                            <div class="credo-text-en">"Respect for All, Play with Passion"</div>
+                            <div class="credo-text-ja">すべての関わる人へリスペクトを払い、情熱を持って誠実に、全力でプレーすること。</div>
+                        </div>
 
-                <div class="card-footer">
-                    <div class="pass-title">STARPASS</div>
-                    <div class="club-auth">
-                        LUCERO KYOTO<br>
-                        OFFICIAL AUTHENTIC
+                        <div class="back-section-title">TERMS OF USE</div>
+                        <ul class="rules-list">
+                            <li>本証はLUCERO京都の公式デジタル会員証です。</li>
+                            <li>加盟店クーポンは1店舗につき1日1回まで利用可能です。</li>
+                            <li>スクリーンショット等でのクーポン利用は固くお断りします。必ず本アプリの確認画面を店員に提示してください。</li>
+                            <li>アスリートとして規律ある行動を心がけましょう。</li>
+                        </ul>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="pass-title" style="color: var(--text-sub);">BACKSIDE</div>
+                        <div class="club-auth">
+                            LUCERO KYOTO<br>
+                            MANAGEMENT OFFICE
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -774,13 +889,11 @@
             ℹ️ <strong>【初回登録】</strong>情報を入力し、写真を登録してください。一度発行すると変更はできません。
         </div>
 
-        <!-- 加盟店・クーポン選択セクション -->
         <section class="partner-section">
             <div class="section-title">
                 🏪 加盟店クーポン対象店舗
             </div>
 
-            <!-- ■ 店舗1 -->
             <div class="partner-card">
                 <div class="partner-header">
                     <div class="partner-name-block">
@@ -801,7 +914,6 @@
                 </a>
             </div>
 
-            <!-- ■ 店舗2 -->
             <div class="partner-card">
                 <div class="partner-header">
                     <div class="partner-name-block">
@@ -822,7 +934,6 @@
                 </a>
             </div>
 
-            <!-- ■ 地図ボックス -->
             <div class="section-title">
                 🗺️ 加盟店マップ（周辺店舗一覧）
             </div>
@@ -833,7 +944,6 @@
         </section>
     </main>
 
-    <!-- 専用ポップアップモーダル -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="modal-shop-name" id="modalShopName">店舗名</div>
@@ -871,7 +981,7 @@
         function startApp() {
             try {
                 initCard();
-                updateHistoryDisplay(); // 履歴の描画処理を起動時に呼び出す
+                updateHistoryDisplay();
                 
                 setTimeout(() => {
                     initMap();
@@ -902,13 +1012,21 @@
                 globalPhotoData = savedPhoto;
                 displaySavedPhoto(savedPhoto);
                 
-                if(infoBoxText) infoBoxText.innerHTML = `ℹ️ <strong>【ご利用方法】</strong>使いたいクーポンのボタンを押し、店員に画面を提示してください。`;
+                if(infoBoxText) infoBoxText.innerHTML = `ℹ️ <strong>【ご利用方法】</strong>カードをタップすると裏面に切り替わります。使いたいクーポンのボタンを押し、店員に画面を提示してください。`;
             } else {
                 isRegistered = false;
                 if(registerBox) registerBox.style.setProperty('display', 'flex', 'important');
                 if(infoBoxText) infoBoxText.innerHTML = `ℹ️ <strong>【初回登録】</strong>情報を入力し、写真を登録してください。一度発行すると変更はできません。`;
             }
             checkCouponStatus();
+        }
+
+        // 🔄 カードタップ反転用関数
+        function toggleCardFlip() {
+            const container = document.getElementById('cardContainer');
+            if(container) {
+                container.classList.toggle('flipped');
+            }
         }
 
         function initMap() {
@@ -996,7 +1114,6 @@
             }, 1000);
         }
 
-        // クーポン確定＆履歴保存
         function executeUseCoupon() {
             if (!activeCouponId) return;
             clearInterval(countdownInterval);
@@ -1018,10 +1135,7 @@
                 body: JSON.stringify(payload)
             })
             .then(() => {
-                // 1. 当日の利用制限フラグをオン
                 localStorage.setItem(`lucero_coupon_used_${activeCouponId}`, getTodayString());
-                
-                // 2. 利用履歴データの保存（新設）
                 saveToHistory(shopName, benefit);
                 
                 alert("ご利用ありがとうございました！");
@@ -1034,22 +1148,18 @@
             });
         }
 
-        // 履歴をLocalStorageに保存する処理
         function saveToHistory(shopName, benefit) {
             const d = new Date();
             const dateStr = `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
             
             let history = JSON.parse(localStorage.getItem('lucero_coupon_history')) || [];
-            // 新しい履歴を先頭に追加
             history.unshift({ date: dateStr, shop: shopName, benefit: benefit });
-            // 直近3件のみ残す
             if (history.length > 3) history = history.slice(0, 3);
             
             localStorage.setItem('lucero_coupon_history', JSON.stringify(history));
             updateHistoryDisplay();
         }
 
-        // 履歴エリアの画面書き換え処理
         function updateHistoryDisplay() {
             const listEl = document.getElementById('historyList');
             if (!listEl) return;
@@ -1118,7 +1228,13 @@
             alert("STARPASSを発行しました！");
         }
 
-        function triggerImageUpload() { if (isRegistered) return; const input = document.getElementById('imageUploadInput'); if(input) input.click(); }
+        // 写真をタップした時はカードが反転しないよう event.stopPropagation() で保護
+        function triggerImageUpload(event) { 
+            if (event) event.stopPropagation();
+            if (isRegistered) return; 
+            const input = document.getElementById('imageUploadInput'); 
+            if(input) input.click(); 
+        }
 
         function handleImageUpload(event) {
             if (isRegistered) return;
@@ -1160,26 +1276,34 @@
         }
         setInterval(updateClock, 50);
 
-        // 3Dカードアニメーション
+        // 3Dジャイロアニメーション（表面を向いている時だけ少し傾くスマート仕様）
         try {
             const container = document.getElementById('cardContainer');
-            const card = document.getElementById('starpassCard');
-            if (container && card) {
+            const inner = document.getElementById('cardInner');
+            if (container && inner) {
                 container.addEventListener('mousemove', (e) => {
+                    if (container.classList.contains('flipped')) return; // 裏面のときは傾きをオフにする
                     const rect = container.getBoundingClientRect();
                     const ax = -(rect.height / 2 - (e.clientY - rect.top)) / 15;
                     const ay = ((e.clientX - rect.left) - rect.width / 2) / 15;
-                    card.style.transform = `rotateX(${Math.max(-10, Math.min(10, ax))}deg) rotateY(${Math.max(-10, Math.min(10, ay))}deg)`;
+                    inner.style.transform = `rotateX(${Math.max(-10, Math.min(10, ax))}deg) rotateY(${Math.max(-10, Math.min(10, ay))}deg)`;
                 });
                 container.addEventListener('touchmove', (e) => {
+                    if (container.classList.contains('flipped')) return;
                     if (e.touches.length === 1) {
                         const rect = container.getBoundingClientRect();
                         const ax = -(rect.height / 2 - (e.touches[0].clientY - rect.top)) / 15;
                         const ay = ((e.touches[0].clientX - rect.left) - rect.width / 2) / 15;
-                        card.style.transform = `rotateX(${Math.max(-10, Math.min(10, ax))}deg) rotateY(${Math.max(-10, Math.min(10, ay))}deg)`;
+                        inner.style.transform = `rotateX(${Math.max(-10, Math.min(10, ax))}deg) rotateY(${Math.max(-10, Math.min(10, ay))}deg)`;
                     }
                 });
-                const resetCard = () => { card.style.transition = 'transform 0.4s ease'; card.style.transform = 'rotateX(0deg) rotateY(0deg)'; };
+                const resetCard = () => { 
+                    if (container.classList.contains('flipped')) {
+                        inner.style.transform = 'rotateY(180deg)';
+                    } else {
+                        inner.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                    }
+                };
                 container.addEventListener('mouseleave', resetCard);
                 container.addEventListener('touchend', resetCard);
             }
